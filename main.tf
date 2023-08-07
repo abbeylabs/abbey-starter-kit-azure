@@ -12,7 +12,16 @@ terraform {
       source = "abbeylabs/abbey"
       version = "0.2.4"
     }
+
+    azuread = {
+      source = "hashicorp/azuread"
+      version = "2.41.0"
+    }
   }
+}
+
+provider "azuread" {
+  use_cli = false
 }
 
 provider "abbey" {
@@ -20,8 +29,13 @@ provider "abbey" {
   bearer_auth = var.abbey_token
 }
 
-resource "abbey_grant_kit" "abbey_demo_site" {
-  name = "Abbey_Demo_Site"
+resource "azuread_group" "quickstart_group" {
+  display_name = "quickstart_group"
+  security_enabled = true
+}
+
+resource "abbey_grant_kit" "azure_group_dev" {
+  name = "abbey_azure_group_dev"
   description = <<-EOT
     Grants access to Abbey's Demo Page.
   EOT
@@ -45,9 +59,9 @@ resource "abbey_grant_kit" "abbey_demo_site" {
     # Path is an RFC 3986 URI, such as `github://{organization}/{repo}/path/to/file.tf`.
     location = "github://replace-me-with-organization/replace-me-with-repo/access.tf" # CHANGEME
     append = <<-EOT
-      resource "abbey_demo" "grant_read_write_access" {
-        permission = "read_write"
-        email = "{{ .data.system.abbey.identities.abbey.email }}"
+      resource "azuread_group_member" "group_member_hat" {
+        group_object_id  = "${azuread_group.abbey_read_group.id}"
+        member_object_id = "${data.system.abbey.idetities.azure.user_id}"
       }
     EOT
   }
