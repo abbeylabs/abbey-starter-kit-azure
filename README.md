@@ -74,7 +74,9 @@ resource "abbey_identity" "dev_user" {
 ## Usage
 At this point, Azure specific set up is complete and you can continue instructions in our [starter kit docs](https://docs.abbey.io/getting-started/quickstart#step-2-configure-github).
 
+When you create a request for access and approve it, you'll be able to see that the newly created group in the Azure console will now have a new member in it.
 
+Once the access is revoked, the user will be removed from the group.
 
 ## :books: Learn More
 
