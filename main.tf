@@ -34,10 +34,21 @@ resource "azuread_group" "quickstart_group" {
   security_enabled = true
 }
 
-resource "abbey_grant_kit" "azure_group_dev" {
-  name = "abbey_azure_group_dev"
+resource "abbey_identity" "dev_user" {
+  abbey_account = "replace-me@example.com" #CHANGEME
+  source = "pagerduty"
+  metadata = jsonencode(
+    {
+      upn = "replace-me-EXT-MICROSOFT_UPN@example.com" #CHANGEME
+    }
+  )
+}
+
+
+resource "abbey_grant_kit" "azure_quickstart_group" {
+  name = "azure_quickstart_group"
   description = <<-EOT
-    Grants access to Abbey's Demo Page.
+    Grants access to our Azure quickstart group.
   EOT
 
   workflow = {
@@ -59,9 +70,9 @@ resource "abbey_grant_kit" "azure_group_dev" {
     # Path is an RFC 3986 URI, such as `github://{organization}/{repo}/path/to/file.tf`.
     location = "github://replace-me-with-organization/replace-me-with-repo/access.tf" # CHANGEME
     append = <<-EOT
-      resource "azuread_group_member" "group_member_hat" {
+      resource "azuread_group_member" "group_member" {
         group_object_id  = "${azuread_group.abbey_read_group.id}"
-        member_object_id = "${data.system.abbey.idetities.azure.user_id}"
+        member_object_id = "${data.system.abbey.idetities.azure.upn}"
       }
     EOT
   }
