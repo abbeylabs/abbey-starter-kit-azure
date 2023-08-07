@@ -1,6 +1,6 @@
 # Abbey Starter Kit Azure Example
 
-This Quickstart is an example for how to use Abbey Labs and set up a Grant Kit for an Azure group and member. By the end, you’ll be able 
+This starter kit is an example for how to use Abbey Labs and set up a Grant Kit for an Azure group and member. By the end, you’ll be able 
 - Create an Azure group
 - Configure an Abbey grant kit and attach it to an Azure resource
 - Add an Azure user to a group with time-based expiry
