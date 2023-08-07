@@ -43,10 +43,10 @@ Save this output, you'll need it in the next step.
 *See [Configure azure credentials as secrets](https://github.com/marketplace/actions/azure-cli-action#configure-azure-credentials-as-github-secret) for more help*
 
 Next, add repository secrets so GithubActions can access these credentials. You'll add the following:
-1. AZURE_CLIENT_ID
-2. AZURE_CLIENT_SECRET
-3. AZURE_SUBSCRIPTION_ID
-4. AZURE_TENANT_ID
+1. `AZURE_CLIENT_ID`
+2. `AZURE_CLIENT_SECRET`
+3. `AZURE_SUBSCRIPTION_ID`
+4. `AZURE_TENANT_ID`
 
 You can do this via `github repo page -> Settings -> Secrets and Variables -> Actions -> New Repository Secret` and create with the above names. You can take the values from the JSON output of the `az ad sp` command.
 
@@ -70,11 +70,9 @@ resource "abbey_identity" "dev_user" {
 1. Replace the `abbey_acount` email with the email address you used to create an Abbey account. 
 2. Replace the upn field with the User principal name from the Azure console of the user you want to test with
 
-### Remainder setup
-At this point, Azure specific set up is complete and you can continue instructions in our [starter kit docs](https://docs.abbey.io/getting-started/quickstart#step-2-configure-github).
-
 
 ## Usage
+At this point, Azure specific set up is complete and you can continue instructions in our [starter kit docs](https://docs.abbey.io/getting-started/quickstart#step-2-configure-github).
 
 
 
