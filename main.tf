@@ -30,7 +30,7 @@ resource "azuread_group" "quickstart_group" {
   security_enabled = true
 }
 
-data "azuread_user" "dev_user" {
+data "azuread_user" "dev_azure_user" {
   user_principal_name = "replace-me-EXT-MICROSOFT_UPN@example.com" # need to use azure userPrincipalName
 }
 
@@ -61,7 +61,7 @@ resource "abbey_grant_kit" "azure_quickstart_group" {
     append = <<-EOT
       resource "azuread_group_member" "group_member" {
         group_object_id  = "${azuread_group.abbey_read_group.id}"
-        member_object_id = "${data.azuread_user.dev_user.id}"
+        member_object_id = "${data.azuread_user.dev_azure_user.id}"
       }
     EOT
   }
