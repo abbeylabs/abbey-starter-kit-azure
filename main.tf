@@ -20,10 +20,6 @@ terraform {
   }
 }
 
-provider "azuread" {
-  use_cli = false
-}
-
 provider "abbey" {
   # Configuration options
   bearer_auth = var.abbey_token
@@ -34,16 +30,9 @@ resource "azuread_group" "quickstart_group" {
   security_enabled = true
 }
 
-resource "abbey_identity" "dev_user" {
-  abbey_account = "replace-me@example.com" #CHANGEME
-  source = "azure"
-  metadata = jsonencode(
-    {
-      upn = "replace-me-EXT-MICROSOFT_UPN@example.com" #CHANGEME
-    }
-  )
+data "azuread_user" "dev_user" {
+  user_principal_name = "replace-me-EXT-MICROSOFT_UPN@example.com" # need to use azure userPrincipalName
 }
-
 
 resource "abbey_grant_kit" "azure_quickstart_group" {
   name = "azure_quickstart_group"
@@ -72,7 +61,7 @@ resource "abbey_grant_kit" "azure_quickstart_group" {
     append = <<-EOT
       resource "azuread_group_member" "group_member" {
         group_object_id  = "${azuread_group.abbey_read_group.id}"
-        member_object_id = "${data.system.abbey.identities.azure.upn}"
+        member_object_id = "${data.azuread_user.dev_user.id}"
       }
     EOT
   }
