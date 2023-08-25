@@ -41,7 +41,7 @@ jobs:
             az storage -h
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
 
@@ -49,13 +49,13 @@ jobs:
         id: init
         run: terraform init
         env:
-          TF_HTTP_USERNAME: quickstart
+          TF_HTTP_USERNAME: quickstart-azure
           TF_HTTP_PASSWORD: ${{ secrets.ABBEY_TOKEN }}
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
         env:
-          TF_HTTP_USERNAME:   quickstart
+          TF_HTTP_USERNAME:   quickstart-azure
           TF_HTTP_PASSWORD:   ${{ secrets.ABBEY_TOKEN }}
           TF_VAR_abbey_token: ${{ secrets.ABBEY_TOKEN }}
