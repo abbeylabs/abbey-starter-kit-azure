@@ -31,7 +31,7 @@ resource "azuread_group" "quickstart_group" {
 }
 
 data "azuread_user" "dev_azure_user" {
-  user_principal_name = "hat@microsoft.com" # need to use azure userPrincipalName
+  user_principal_name = "replace-me-EXT-MICROSOFT_UPN@example.com" # need to use azure userPrincipalName
 }
 
 resource "abbey_grant_kit" "azure_quickstart_group" {
@@ -44,20 +44,20 @@ resource "abbey_grant_kit" "azure_quickstart_group" {
     steps = [
       {
         reviewers = {
-          one_of = ["hat@abbey.io"]
+          one_of = ["replace-me@example.com"] # CHANGEME
         }
       }
     ]
   }
 
   policies = [
-    { bundle = "github://hatim-khan/abbey-starter-kit-quickstart" }
+    { bundle = "github://replace-me-with-organization/replace-me-with-repo/policies" } # CHANGEME
   ]
 
   output = {
     # Replace with your own path pointing to where you want your access changes to manifest.
     # Path is an RFC 3986 URI, such as `github://{organization}/{repo}/path/to/file.tf`.
-    location = "access.tf"
+    location = "github://replace-me-with-organization/replace-me-with-repo/access.tf" # CHANGEME
     append = <<-EOT
       resource "azuread_group_member" "group_member" {
         group_object_id  = "${azuread_group.abbey_read_group.id}"
