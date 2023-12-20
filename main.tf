@@ -1,28 +1,9 @@
-terraform {
-  backend "http" {
-    address        = "https://api.abbey.io/terraform-http-backend"
-    lock_address   = "https://api.abbey.io/terraform-http-backend/lock"
-    unlock_address = "https://api.abbey.io/terraform-http-backend/unlock"
-    lock_method    = "POST"
-    unlock_method  = "POST"
-  }
+locals {
+  account_name = ""
+  repo_name = ""
 
-  required_providers {
-    abbey = {
-      source = "abbeylabs/abbey"
-      version = "0.2.4"
-    }
-
-    azuread = {
-      source = "hashicorp/azuread"
-      version = "2.41.0"
-    }
-  }
-}
-
-provider "abbey" {
-  # Configuration options
-  bearer_auth = var.abbey_token
+  project_path = "github://${local.account_name}/${local.repo_name}"
+  policies_path = "${local.project_path}/policies"
 }
 
 resource "azuread_group" "quickstart_group" {
@@ -51,17 +32,15 @@ resource "abbey_grant_kit" "azure_quickstart_group" {
   }
 
   policies = [
-    { bundle = "github://replace-me-with-organization/replace-me-with-repo/policies" } # CHANGEME
+    { bundle = local.policies_path }
   ]
 
   output = {
-    # Replace with your own path pointing to where you want your access changes to manifest.
-    # Path is an RFC 3986 URI, such as `github://{organization}/{repo}/path/to/file.tf`.
-    location = "github://replace-me-with-organization/replace-me-with-repo/access.tf" # CHANGEME
+    location = "${local.project_path}/access.tf"
     append = <<-EOT
       resource "azuread_group_member" "group_member" {
-        group_object_id  = "${azuread_group.abbey_read_group.id}"
-        member_object_id = "${data.azuread_user.dev_azure_user.id}"
+        group_object_id  = azuread_group.quickstart_group.id}
+        member_object_id = data.azuread_user.dev_azure_user.id
       }
     EOT
   }
